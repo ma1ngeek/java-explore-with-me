@@ -26,7 +26,7 @@ public class StatsClient extends BaseClient {
     }
 
     public ResponseEntity<Object> addHit(String name, String uri, String ip, LocalDateTime timestamp) {
-        log.info("Регистрация обращения к name = {}, uri = {}, ip = {}, timestamp = {}",
+        log.info("Запрос на регистрацию обращения к name = {}, uri = {}, ip = {}, timestamp = {}",
                 name, uri, ip, timestamp);
 
         EndpointHit endpointHit = EndpointHit.builder()
@@ -35,7 +35,7 @@ public class StatsClient extends BaseClient {
                 .ip(ip)
                 .timestamp(timestamp.format(Common.DT_FORMATTER))
                 .build();
-        return post(Common.ENDPOINT_HIT, endpointHit);
+        return post(Common.HIT_ENDPOINT, endpointHit);
     }
 
     public ResponseEntity<Object> getStats(LocalDateTime start, LocalDateTime end, List<String> uris) {
@@ -51,14 +51,14 @@ public class StatsClient extends BaseClient {
     }
 
     public ResponseEntity<Object> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
-        log.info("Получение статистики по параметрам start = {}, end = {}, uris = {}, unique = {}",
+        log.info("Запрос на получение статистики по параметрам start = {}, end = {}, uris = {}, unique = {}",
                 start, end, uris, unique);
 
         if (start == null || end == null || start.isAfter(end)) {
             throw new IllegalArgumentException("Недопустимый интервал дат.");
         }
 
-        StringBuilder uriBuilder = new StringBuilder(Common.ENDPOINT_STATS + "?start={start}&end={end}");
+        StringBuilder uriBuilder = new StringBuilder(Common.STATS_ENDPOINT + "?start={start}&end={end}");
         Map<String, Object> parameters = Map.of(
                 "start", start.format(Common.DT_FORMATTER),
                 "end", end.format(Common.DT_FORMATTER)

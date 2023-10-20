@@ -14,9 +14,9 @@ public class StatsMapper {
             return null;
         }
         Stats res = Stats.builder()
+                .app(endpointHit.getApp())
                 .ip(endpointHit.getIp())
                 .uri(endpointHit.getUri())
-                .app(endpointHit.getApp())
                 .timestamp(timestamp)
                 .build();
         return res;
