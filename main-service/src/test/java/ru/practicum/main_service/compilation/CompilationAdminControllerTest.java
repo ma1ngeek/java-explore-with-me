@@ -19,7 +19,7 @@ import ru.practicum.main_service.compilation.service.CompilationService;
 import ru.practicum.main_service.event.dto.EventShortDto;
 
 import java.nio.charset.StandardCharsets;
-import java.util.List;
+import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
@@ -49,7 +49,7 @@ public class CompilationAdminControllerTest {
             .id(1L)
             .title("test title")
             .pinned(false)
-            .events(List.of(eventShortDto))
+            .events(Set.of(eventShortDto))
             .build();
 
     private NewCompilationDto newCompilationDto;
@@ -62,7 +62,7 @@ public class CompilationAdminControllerTest {
             newCompilationDto = NewCompilationDto.builder()
                     .title("test title")
                     .pinned(false)
-                    .events(List.of(1L))
+                    .events(Set.of(1L))
                     .build();
         }
 
@@ -205,7 +205,7 @@ public class CompilationAdminControllerTest {
             updateCompilationRequest = UpdateCompilationRequest.builder()
                     .title("test title")
                     .pinned(false)
-                    .events(List.of(1L))
+                    .events(Set.of(1L))
                     .build();
         }
 

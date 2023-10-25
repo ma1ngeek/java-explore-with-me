@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +60,7 @@ public class StatsServiceImpl implements StatsService {
     }
 
     @Override
-    public Map<Long, Long> getViews(List<Event> events) {
+    public Map<Long, Long> getViews(Collection<Event> events) {
         log.info("Отправлен запрос на получение статистики неуникальных посещений в виде Map<eventId, count> " +
                 "для списка событий.");
 
@@ -96,7 +97,7 @@ public class StatsServiceImpl implements StatsService {
     }
 
     @Override
-    public Map<Long, Long> getConfirmedRequests(List<Event> events) {
+    public Map<Long, Long> getConfirmedRequests(Collection<Event> events) {
         List<Long> eventsId = getPublished(events).stream()
                 .map(Event::getId)
                 .collect(Collectors.toList());
@@ -111,7 +112,7 @@ public class StatsServiceImpl implements StatsService {
         return requestStats;
     }
 
-    private List<Event> getPublished(List<Event> events) {
+    private List<Event> getPublished(Collection<Event> events) {
         return events.stream()
                 .filter(event -> event.getPublishedOn() != null)
                 .collect(Collectors.toList());

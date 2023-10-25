@@ -13,7 +13,7 @@ import ru.practicum.main_service.compilation.model.Compilation;
 import ru.practicum.main_service.event.dto.EventShortDto;
 import ru.practicum.main_service.event.model.Event;
 
-import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -38,31 +38,31 @@ public class CompilationMapperTest {
     private final NewCompilationDto newCompilationDto = NewCompilationDto.builder()
             .title("test title")
             .pinned(false)
-            .events(List.of(event1.getId(), event2.getId()))
+            .events(Set.of(event1.getId(), event2.getId()))
             .build();
     private final UpdateCompilationRequest updateCompilationRequest = UpdateCompilationRequest.builder()
             .title(newCompilationDto.getTitle())
             .pinned(newCompilationDto.getPinned())
-            .events(List.of(event1.getId(), event2.getId()))
+            .events(Set.of(event1.getId(), event2.getId()))
             .build();
     private final Compilation compilation = Compilation.builder()
             .id(1L)
             .title(newCompilationDto.getTitle())
             .pinned(newCompilationDto.getPinned())
-            .events(List.of(event1, event2))
+            .events(Set.of(event1, event2))
             .build();
     private final CompilationDto compilationDto = CompilationDto.builder()
             .id(1L)
             .title(compilation.getTitle())
             .pinned(compilation.getPinned())
-            .events(List.of(eventShortDto1, eventShortDto2))
+            .events(Set.of(eventShortDto1, eventShortDto2))
             .build();
 
     @Nested
     class NewDtoToCompilation {
         @Test
         public void shouldReturnCompilation() {
-            Compilation result = compilationMapper.newDtoToCompilation(newCompilationDto, List.of(event1, event2));
+            Compilation result = compilationMapper.newDtoToCompilation(newCompilationDto, Set.of(event1, event2));
 
             assertNull(result.getId());
             assertEquals(compilation.getTitle(), result.getTitle());
@@ -82,7 +82,7 @@ public class CompilationMapperTest {
     class ToCompilationDto {
         @Test
         public void shouldReturnCompilationDto() {
-            CompilationDto result = compilationMapper.toCompilationDto(compilation, List.of(eventShortDto1, eventShortDto2));
+            CompilationDto result = compilationMapper.toCompilationDto(compilation, Set.of(eventShortDto1, eventShortDto2));
 
             assertEquals(compilationDto.getId(), result.getId());
             assertEquals(compilationDto.getTitle(), result.getTitle());

@@ -18,6 +18,7 @@ import ru.practicum.main_service.event.repository.EventRepository;
 import ru.practicum.main_service.exception.NotFoundException;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -39,10 +40,10 @@ public class CompilationServiceImpl implements CompilationService {
     public CompilationDto create(NewCompilationDto newCompilationDto) {
         log.info("Создание новой подборки событий с параметрами {}", newCompilationDto);
 
-        List<Event> events = new ArrayList<>();
+        Set<Event> events = new HashSet<>();
 
         if (!newCompilationDto.getEvents().isEmpty()) {
-            events = eventRepository.findAllByIdIn(newCompilationDto.getEvents());
+            events.addAll(eventRepository.findAllByIdIn(newCompilationDto.getEvents()));
             checkSize(events, newCompilationDto.getEvents());
         }
 
@@ -67,7 +68,7 @@ public class CompilationServiceImpl implements CompilationService {
         }
 
         if (updateCompilationRequest.getEvents() != null) {
-            List<Event> events = eventRepository.findAllByIdIn(updateCompilationRequest.getEvents());
+            Set<Event> events = new HashSet<Event>(eventRepository.findAllByIdIn(updateCompilationRequest.getEvents()));
 
             checkSize(events, updateCompilationRequest.getEvents());
 
@@ -110,7 +111,7 @@ public class CompilationServiceImpl implements CompilationService {
 
         List<CompilationDto> result = new ArrayList<>();
         compilations.forEach(compilation -> {
-            List<EventShortDto> compEventsShortDto = new ArrayList<>();
+            Set<EventShortDto> compEventsShortDto = new HashSet<>();
             compilation.getEvents()
                     .forEach(event -> compEventsShortDto.add(eventsShortDto.get(event.getId())));
             result.add(compilationMapper.toCompilationDto(compilation, compEventsShortDto));
@@ -125,7 +126,7 @@ public class CompilationServiceImpl implements CompilationService {
 
         Compilation compilation = getCompilationById(compId);
 
-        List<EventShortDto> eventsShortDto = eventTool.toEventsShortDto(compilation.getEvents());
+        Set<EventShortDto> eventsShortDto = eventTool.toEventsShortDto(compilation.getEvents());
 
         return compilationMapper.toCompilationDto(compilation, eventsShortDto);
     }
@@ -135,7 +136,7 @@ public class CompilationServiceImpl implements CompilationService {
                 .orElseThrow(() -> new NotFoundException("Подборки с таким id не существует."));
     }
 
-    private void checkSize(List<Event> events, List<Long> eventsIdToUpdate) {
+    private void checkSize(Collection<Event> events, Collection<Long> eventsIdToUpdate) {
         if (events.size() != eventsIdToUpdate.size()) {
             throw new NotFoundException("Некоторые события не найдены.");
         }

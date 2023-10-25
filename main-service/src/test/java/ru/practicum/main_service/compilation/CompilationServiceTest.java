@@ -30,6 +30,7 @@ import ru.practicum.main_service.user.model.User;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -80,17 +81,17 @@ public class CompilationServiceTest {
     private final NewCompilationDto newCompilationDto1 = NewCompilationDto.builder()
             .title("test title 1")
             .pinned(false)
-            .events(List.of(1L, 2L))
+            .events(Set.of(1L, 2L))
             .build();
     private final NewCompilationDto newCompilationDto2 = NewCompilationDto.builder()
             .title("test title 2")
             .pinned(true)
-            .events(List.of())
+            .events(Set.of())
             .build();
     private final UpdateCompilationRequest updateCompilationRequest1 = UpdateCompilationRequest.builder()
             .title("test title update")
             .pinned(true)
-            .events(List.of(1L))
+            .events(Set.of(1L))
             .build();
     private final Event event1 = Event.builder()
             .id(1L)
@@ -116,37 +117,37 @@ public class CompilationServiceTest {
             .id(1L)
             .title(newCompilationDto1.getTitle())
             .pinned(newCompilationDto1.getPinned())
-            .events(List.of(event1, event2))
+            .events(Set.of(event1, event2))
             .build();
     private final Compilation compilation2 = Compilation.builder()
             .id(2L)
             .title(newCompilationDto2.getTitle())
             .pinned(newCompilationDto2.getPinned())
-            .events(List.of())
+            .events(Set.of())
             .build();
     private final Compilation updatedCompilation1 = Compilation.builder()
             .id(compilation1.getId())
             .title(updateCompilationRequest1.getTitle())
             .pinned(updateCompilationRequest1.getPinned())
-            .events(List.of(event1))
+            .events(Set.of(event1))
             .build();
     private final CompilationDto compilationDto1 = CompilationDto.builder()
             .id(compilation1.getId())
             .title(compilation1.getTitle())
             .pinned(compilation1.getPinned())
-            .events(List.of(eventShortDto1, eventShortDto2))
+            .events(Set.of(eventShortDto1, eventShortDto2))
             .build();
     private final CompilationDto compilationDto2 = CompilationDto.builder()
             .id(compilation2.getId())
             .title(compilation2.getTitle())
             .pinned(compilation2.getPinned())
-            .events(List.of())
+            .events(Set.of())
             .build();
     private final CompilationDto updatedCompilationDto1 = CompilationDto.builder()
             .id(updatedCompilation1.getId())
             .title(updatedCompilation1.getTitle())
             .pinned(updatedCompilation1.getPinned())
-            .events(List.of(eventShortDto1))
+            .events(Set.of(eventShortDto1))
             .build();
 
     @Nested
@@ -157,7 +158,7 @@ public class CompilationServiceTest {
             when(compilationMapper.newDtoToCompilation(any(), any())).thenCallRealMethod();
             when(compilationRepository.save(any())).thenReturn(compilation1);
             when(compilationRepository.findById(any())).thenReturn(Optional.of(compilation1));
-            when(eventTool.toEventsShortDto(List.of(event1, event2))).thenReturn(List.of(eventShortDto1, eventShortDto2));
+            when(eventTool.toEventsShortDto(Set.of(event1, event2))).thenReturn(Set.of(eventShortDto1, eventShortDto2));
             when(compilationMapper.toCompilationDto(any(), any())).thenCallRealMethod();
 
             CompilationDto savedCompilationDto = compilationService.create(newCompilationDto1);
@@ -180,7 +181,7 @@ public class CompilationServiceTest {
             when(compilationMapper.newDtoToCompilation(any(), any())).thenCallRealMethod();
             when(compilationRepository.save(any())).thenReturn(compilation2);
             when(compilationRepository.findById(any())).thenReturn(Optional.of(compilation2));
-            when(eventTool.toEventsShortDto(List.of())).thenReturn(List.of());
+            when(eventTool.toEventsShortDto(Set.of())).thenReturn(Set.of());
             when(compilationMapper.toCompilationDto(any(), any())).thenCallRealMethod();
 
             CompilationDto savedCompilationDto = compilationService.create(newCompilationDto2);
@@ -217,7 +218,7 @@ public class CompilationServiceTest {
             when(compilationRepository.findById(any())).thenReturn(Optional.of(compilation1));
             when(eventRepository.findAllByIdIn(any())).thenReturn(List.of(event1));
             when(compilationRepository.save(any())).thenReturn(updatedCompilation1);
-            when(eventTool.toEventsShortDto(List.of(event1))).thenReturn(List.of(eventShortDto1));
+            when(eventTool.toEventsShortDto(Set.of(event1))).thenReturn(Set.of(eventShortDto1));
             when(compilationMapper.toCompilationDto(any(), any())).thenCallRealMethod();
 
             CompilationDto savedCompilationDto = compilationService.patch(compilation1.getId(), updateCompilationRequest1);
@@ -290,7 +291,7 @@ public class CompilationServiceTest {
         @Test
         public void shouldGetIfPinnedIsNull() {
             when(compilationRepository.findAll(pageable)).thenReturn(new PageImpl<>(List.of(compilation1, compilation2)));
-            when(eventTool.toEventsShortDto(any())).thenReturn(List.of(eventShortDto1, eventShortDto2));
+            when(eventTool.toEventsShortDto(any())).thenReturn(Set.of(eventShortDto1, eventShortDto2));
             when(compilationMapper.toCompilationDto(ArgumentMatchers.eq(compilation1), ArgumentMatchers.any()))
                     .thenCallRealMethod();
             when(compilationMapper.toCompilationDto(ArgumentMatchers.eq(compilation2), ArgumentMatchers.any()))
@@ -313,7 +314,7 @@ public class CompilationServiceTest {
         @Test
         public void shouldGetIfPinnedIsNotNull() {
             when(compilationRepository.findAllByPinned(compilation2.getPinned(), pageable)).thenReturn(List.of(compilation2));
-            when(eventTool.toEventsShortDto(any())).thenReturn(List.of());
+            when(eventTool.toEventsShortDto(any())).thenReturn(Set.of());
             when(compilationMapper.toCompilationDto(ArgumentMatchers.eq(compilation2), ArgumentMatchers.any()))
                     .thenCallRealMethod();
 
@@ -335,7 +336,7 @@ public class CompilationServiceTest {
         @Test
         public void shouldGet() {
             when(compilationRepository.findById(compilation1.getId())).thenReturn(Optional.of(compilation1));
-            when(eventTool.toEventsShortDto(compilation1.getEvents())).thenReturn(List.of(eventShortDto1, eventShortDto2));
+            when(eventTool.toEventsShortDto(compilation1.getEvents())).thenReturn(Set.of(eventShortDto1, eventShortDto2));
             when(compilationMapper.toCompilationDto(ArgumentMatchers.eq(compilation1), ArgumentMatchers.any()))
                     .thenCallRealMethod();
 

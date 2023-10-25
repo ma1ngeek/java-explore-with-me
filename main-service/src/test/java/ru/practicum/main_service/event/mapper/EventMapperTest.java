@@ -173,9 +173,9 @@ public class EventMapperTest {
             assertEquals(eventFullDto.getEventDate(), result.getEventDate());
             assertEquals(eventFullDto.getCategory(), result.getCategory());
             assertEquals(eventFullDto.getLocation(), result.getLocation());
-            assertEquals(eventFullDto.getPaid(), result.getPaid());
+            assertEquals(eventFullDto.isPaid(), result.isPaid());
             assertEquals(eventFullDto.getParticipantLimit(), result.getParticipantLimit());
-            assertEquals(eventFullDto.getRequestModeration(), result.getRequestModeration());
+            assertEquals(eventFullDto.isRequestModeration(), result.isRequestModeration());
             assertEquals(eventFullDto.getInitiator(), result.getInitiator());
             assertEquals(eventFullDto.getState(), result.getState());
             assertEquals(eventFullDto.getCreatedOn(), result.getCreatedOn());
@@ -210,7 +210,7 @@ public class EventMapperTest {
             assertEquals(eventShortDto.getAnnotation(), result.getAnnotation());
             assertEquals(eventShortDto.getEventDate(), result.getEventDate());
             assertEquals(eventShortDto.getCategory(), result.getCategory());
-            assertEquals(eventShortDto.getPaid(), result.getPaid());
+            assertEquals(eventShortDto.isPaid(), result.isPaid());
             assertEquals(eventShortDto.getInitiator(), result.getInitiator());
             assertEquals(eventShortDto.getConfirmedRequests(), result.getConfirmedRequests());
             assertEquals(eventShortDto.getViews(), result.getViews());

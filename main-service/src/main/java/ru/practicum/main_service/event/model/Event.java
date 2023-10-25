@@ -1,10 +1,12 @@
 package ru.practicum.main_service.event.model;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import ru.practicum.main_service.MainCommon;
@@ -32,51 +34,52 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
     @Column(nullable = false, length = MainCommon.MAX_LENGTH_TITLE)
-    private String title;
+    String title;
 
     @Column(nullable = false, length = MainCommon.MAX_LENGTH_ANNOTATION)
-    private String annotation;
+    String annotation;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", referencedColumnName = "id")
-    private Category category;
+    Category category;
 
     @Column(nullable = false, length = MainCommon.MAX_LENGTH_DESCRIPTION)
-    private String description;
+    String description;
 
     @Column(nullable = false)
-    private Boolean paid;
+    Boolean paid;
 
     @Column(nullable = false)
-    private Integer participantLimit;
+    Integer participantLimit;
 
     @Column(nullable = false)
-    private LocalDateTime eventDate;
+    LocalDateTime eventDate;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "location_id", referencedColumnName = "id")
-    private Location location;
+    Location location;
 
     @Column(nullable = false)
-    private LocalDateTime createdOn;
+    LocalDateTime createdOn;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private EventState state;
+    EventState state;
 
-    private LocalDateTime publishedOn;
+    LocalDateTime publishedOn;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private User initiator;
+    User initiator;
 
     @Column(nullable = false)
-    private Boolean requestModeration;
+    Boolean requestModeration;
 }

@@ -24,6 +24,7 @@ import ru.practicum.main_service.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -71,19 +72,19 @@ public class CompilationRepositoryTest {
             .id(1L)
             .title("test title 1")
             .pinned(true)
-            .events(List.of(event1))
+            .events(Set.of(event1))
             .build();
     private final Compilation compilation2 = Compilation.builder()
             .id(2L)
             .title("test title 2")
             .pinned(true)
-            .events(List.of())
+            .events(Set.of())
             .build();
     private final Compilation compilation3 = Compilation.builder()
             .id(3L)
             .title("test title 3")
             .pinned(false)
-            .events(List.of(event1))
+            .events(Set.of(event1))
             .build();
     private final Integer from = Integer.parseInt(MainCommon.PAGE_DEFAULT_FROM);
     private final Integer size = Integer.parseInt(MainCommon.PAGE_DEFAULT_SIZE);
