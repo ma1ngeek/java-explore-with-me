@@ -25,21 +25,21 @@ import java.util.List;
 public class StatsController {
     private final StatsService statsService;
 
-    @PostMapping(Common.ENDPOINT_HIT)
+    @PostMapping(Common.HIT_ENDPOINT)
     @ResponseStatus(HttpStatus.CREATED)
     public void addHit(@Valid @RequestBody EndpointHit endpointHit) {
-        log.info("POST {} {}", Common.ENDPOINT_HIT, endpointHit);
+        log.info("POST {} {}", Common.HIT_ENDPOINT, endpointHit);
         statsService.addHit(endpointHit);
     }
 
-    @GetMapping(Common.ENDPOINT_STATS)
+    @GetMapping(Common.STATS_ENDPOINT)
     public List<ViewStats> getStats(@RequestParam @DateTimeFormat(pattern = Common.DT_FORMAT) LocalDateTime start,
                                     @RequestParam @DateTimeFormat(pattern = Common.DT_FORMAT) LocalDateTime end,
                                     @RequestParam(required = false) List<String> uris,
-                                    @RequestParam(defaultValue = "false") Boolean unique) {
-        log.info("GET {} start={}, end={}, uris={}, unique={}", Common.ENDPOINT_STATS, start, end, uris, unique);
+                                    @RequestParam(required = false, defaultValue = "false") Boolean unique) {
+        log.info("GET {} start={}, end={}, uris={}, unique={}", Common.STATS_ENDPOINT, start, end, uris, unique);
         if (start.isAfter(end)) {
-            throw new IllegalArgumentException("Недопустимый интервал дат.");
+            throw new IllegalArgumentException("Недопустимый временной промежуток.");
         }
         return statsService.getStats(start, end, uris, unique);
     }

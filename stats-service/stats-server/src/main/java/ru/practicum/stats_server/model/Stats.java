@@ -16,14 +16,14 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@Builder
 @Entity
 @Table(name = "stats", schema = "public")
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Stats {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

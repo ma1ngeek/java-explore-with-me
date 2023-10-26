@@ -31,7 +31,7 @@ public class StatsServiceImpl implements StatsService {
 
     @Override
     public List<ViewStats> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
-        log.info("Вывод статистики обращений по параметрам start = {}, end = {}, uris = {}, unique = {}",
+        log.info("Вывод списка обращений по параметрам start = {}, end = {}, uris = {}, unique = {}",
                 start, end, uris, unique);
 
         if (uris == null || uris.isEmpty()) {
